@@ -4,27 +4,27 @@ app.Utils = (function(window) {
     var transformProperty;
     
     if (document.body.style.webkitTransform !== undefined) {
-      transformProperty = "webkitTransform";
+      transformProperty = 'webkitTransform';
     } else if (document.body.style.mozTransform !== undefined){
-      transformProperty = "mozTransform";
+      transformProperty = 'mozTransform';
     } else {
-      transformProperty = "transform";
+      transformProperty = 'transform';
     }
     
     Utils.prototype.event = {
         eventMap: {},
-        fire: function (eventName, data) {
-            if (typeof this.eventMap[eventName] === "function") {
+        fire: function(eventName, data) {
+            if (typeof this.eventMap[eventName] === 'function') {
                 this.eventMap[eventName](data);
             }
         },
-        subscribe: function (eventName, fn, replace) {
-            if (typeof this.eventMap[eventName] === "undefined" || replace) {
+        subscribe: function(eventName, fn, replace) {
+            if (typeof this.eventMap[eventName] === 'undefined' || replace) {
                 this.eventMap[eventName] = fn;
             } else {
                 var oldFunction = this.eventMap[eventName];
-                this.eventMap[eventName] = function (data) {
-                    if(typeof data !== "undefined") {
+                this.eventMap[eventName] = function(data) {
+                    if(typeof data !== 'undefined') {
                         oldFunction(data);
                         fn(data);
                     } else {
@@ -46,8 +46,8 @@ app.Utils = (function(window) {
     Utils.prototype.addClass = function(el, classname) {
         var existingClasses = el.className;
         
-        if ( existingClasses.indexOf(classname) === -1 ) {
-            el.className = ( existingClasses + " " + classname ).trim();
+        if (existingClasses.indexOf(classname) === -1 ) {
+            el.className = (existingClasses + ' ' + classname).trim();
         }
         
         return el;
@@ -56,7 +56,7 @@ app.Utils = (function(window) {
     Utils.prototype.removeClass = function(el, classname) {
         var existingClasses = el.className;
         
-        el.className = existingClasses.replace(classname, "").trim();
+        el.className = existingClasses.replace(classname, '').trim();
         
         return el;
     };
@@ -65,7 +65,7 @@ app.Utils = (function(window) {
         currentTransform = currentTransform || {};
         var currentX = currentTransform.x || 0;
         var currentY = currentTransform.y || 0;
-        el.style[transformProperty] = "translate("+Math.ceil(currentX+toX)+"px, "+Math.ceil(currentY+toY)+"px)";
+        el.style[transformProperty] = 'translate(' + Math.ceil(currentX + toX)+ 'px, ' + Math.ceil(currentY + toY) + 'px)';
     };
     
     //  from Underscore.js
@@ -84,8 +84,8 @@ app.Utils = (function(window) {
         return shuffled;
     };
     
-    Utils.prototype.isAndroid = function() {      
-      if (navigator.userAgent.indexOf("Android") > -1) {
+    Utils.prototype.isAndroid = function() {
+      if (navigator.userAgent.indexOf('Android') > -1) {
         return true;
       }
       return false;
