@@ -1,5 +1,5 @@
 .piece {
-    background:transparent url('../img/image.jpg') no-repeat;
+    background:transparent url('../img/dog.jpg') no-repeat;
     position: absolute;
     border: 1px solid #222;
     z-index: 1;
