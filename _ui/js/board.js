@@ -193,6 +193,7 @@ app.Board = (function(window, undefined) {
         
         this.element = setup.board(options);
         this.pieces = setup.pieces(this.element);
+        this.answer = this.pieces.slice();
         
         this.initEvents();
     };
@@ -370,6 +371,12 @@ app.Board = (function(window, undefined) {
         this.lastPoint = null;
         
         app.utils.addClass(this.element, ANIMATE_CSS_CLASS);
+
+        // Check whether use wins.
+        isWin = this.checkGame();
+        if (isWin) {
+            console.log('win');
+        }
     };
     
     Board.prototype.resizeBoard = function() {
@@ -439,6 +446,25 @@ app.Board = (function(window, undefined) {
         
         setPiecesTransform(this.pieces);
     };
+
+    Board.prototype.checkGame = function() {
+        // console.log(this.answer);
+        // console.log(this.pieces);
+        for (var i = 0; i < this.answer.length; i++) {
+            currAnswerPiece = this.answer[i];
+            currPiece = this.pieces[i];
+            if (currAnswerPiece === null) {
+                if (currPiece !== null) {
+                    return false;
+                }
+            } else {
+                if (currPiece === null || currAnswerPiece.element.id !== currPiece.element.id) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     
     return Board;
 })(window);
