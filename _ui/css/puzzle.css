@@ -1,12 +1,14 @@
 @media only screen and (min-width: 630px) {
     body {
-        background: transparent url('../img/flowers_large.jpg') no-repeat center center fixed;
+        margin: 0px;
+        background: transparent url('../img/wall_bg.jpg') no-repeat center center fixed;
     }
 }
 
 @media only screen and (max-width: 629px) {
     body {
-        background: transparent url('../img/flowers_small.jpg') no-repeat center center;
+        margin: 0px;
+        background: transparent url('../img/wall_bg.jpg') no-repeat center center;
     }
 }
 

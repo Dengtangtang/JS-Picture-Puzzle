@@ -8,10 +8,18 @@ app.Puzzle = (function(window, undefined) {
             id: "board",
             image: options.image
         });
-        document.querySelector(options.wrapper).appendChild(this.board.element);
+        this.wall = new app.Wall({
+            cssClass: "wall",
+            id: "wall",
+        });
+        this.isWin = false;
+        var wrapper = document.querySelector(options.wrapper);
+        wrapper.style.position = 'relative';
+        wrapper.appendChild(this.wall.element);
+        wrapper.appendChild(this.board.element);
         app.utils.event.fire('board:appended');
         this.initEvents();
-        app.utils.addClass(this.board.element, 'showing');
+        // app.utils.addClass(this.board.element, showClass);
     };
     
     Puzzle.prototype.initEvents = function() {
@@ -20,5 +28,6 @@ app.Puzzle = (function(window, undefined) {
             that.board.shuffle();
         }, false);
     };
+
     return Puzzle;
 })(window);

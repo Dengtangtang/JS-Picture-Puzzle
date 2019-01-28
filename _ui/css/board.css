@@ -1,7 +1,10 @@
-.board {
+.board,
+.wall {
     margin: 20px auto;
     overflow: hidden;
-    position: relative;
+    position: absolute;
+    left: 0px;
+    right: 0px;
     z-index: 2;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#B9B9B9), to(#888));
     background-image: -moz-gradient(linear, left top, left bottom, from(#B9B9B9), to(#888));
@@ -14,4 +17,14 @@
 
 .board.showing {
     opacity: 1;
+}
+
+/* Add wall css */
+.wall > table {
+    margin: auto;
+}
+
+.wall.showing {
+    opacity: 1;
+    background-image: none;
 }

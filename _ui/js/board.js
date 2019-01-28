@@ -17,6 +17,7 @@ app.Board = (function(window, undefined) {
     
     var ANIMATE_CSS_CLASS = 'animate',
         ACTIVE_PIECE_CSS_CLASS = 'active';
+        SHOW_CLASS = 'showing';
         
     var convert = {
         arrayIndexToTransform: function(i) {
@@ -89,6 +90,7 @@ app.Board = (function(window, undefined) {
             element.id = options.id;
             app.utils.addClass(element, options.cssClass);
             app.utils.addClass(element, ANIMATE_CSS_CLASS);
+            app.utils.addClass(element, SHOW_CLASS);
             element.style.width = widthOfBoard + 'px';
             element.style.height = heightOfBoard + 'px';
             
@@ -335,7 +337,6 @@ app.Board = (function(window, undefined) {
         this.lastPoint = point;
     };
 
-    
     Board.prototype.endEvent = function(e) {
         var movedMostOfTheWay, 
             didntMoveAtAll, 
@@ -372,10 +373,13 @@ app.Board = (function(window, undefined) {
         
         app.utils.addClass(this.element, ANIMATE_CSS_CLASS);
 
-        // Check whether use wins.
-        isWin = this.checkGame();
+        // Check whether the user wins.
+        var isWin = this.checkGame();
+        console.log(isWin);
         if (isWin) {
-            console.log('win');
+            app.utils.removeClass(this.element, SHOW_CLASS);
+            var wall = document.querySelector('#wall');
+            app.utils.addClass(wall, SHOW_CLASS);
         }
     };
     
@@ -390,8 +394,8 @@ app.Board = (function(window, undefined) {
         tileWidth = clientWidth / gridNumEachSide;
         tileHeight = clientWidth / gridNumEachSide;
         
-        this.element.style.width=clientWidth+"px";
-        this.element.style.height=clientWidth+"px";
+        this.element.style.width = clientWidth + 'px';
+        this.element.style.height = clientWidth + 'px';
         
         this.pieces.forEach(function(piece, i) {
             var transformCoords;
@@ -404,7 +408,7 @@ app.Board = (function(window, undefined) {
                     height: tileHeight,
                     width: tileWidth,
                     backgroundSize: clientWidth,
-                    backgroundPosition: (-transformCoords.x)+"px "+(-transformCoords.y)+"px"
+                    backgroundPosition: (-transformCoords.x) + 'px ' + (-transformCoords.y) + 'px'
                 };
                 that.pieces[i].ui(styles);
                 
