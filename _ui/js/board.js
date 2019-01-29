@@ -334,7 +334,6 @@ app.Board = (function(window, undefined) {
         this.lastPoint = point;
     };
 
-    
     Board.prototype.endEvent = function(e) {
         var movedMostOfTheWay, 
             didntMoveAtAll, 
@@ -383,8 +382,8 @@ app.Board = (function(window, undefined) {
         tileWidth = clientWidth / gridNumEachSide;
         tileHeight = clientWidth / gridNumEachSide;
         
-        this.element.style.width=clientWidth+"px";
-        this.element.style.height=clientWidth+"px";
+        this.element.style.width = clientWidth + 'px';
+        this.element.style.height = clientWidth + 'px';
         
         this.pieces.forEach(function(piece, i) {
             var transformCoords;
@@ -397,7 +396,7 @@ app.Board = (function(window, undefined) {
                     height: tileHeight,
                     width: tileWidth,
                     backgroundSize: clientWidth,
-                    backgroundPosition: (-transformCoords.x)+"px "+(-transformCoords.y)+"px"
+                    backgroundPosition: (-transformCoords.x) + 'px ' + (-transformCoords.y) + 'px'
                 };
                 that.pieces[i].ui(styles);
                 
