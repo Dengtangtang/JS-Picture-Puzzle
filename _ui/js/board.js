@@ -385,7 +385,6 @@ app.Board = (function(window, undefined) {
 
         // Check whether the user wins.
         var isWin = this.checkGame();
-        console.log(isWin);
         if (isWin) {
             app.utils.removeClass(this.element, SHOW_CLASS);
             var wall = document.querySelector('#wall');
