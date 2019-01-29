@@ -7,14 +7,17 @@ app.Wall = (function(window) {
         tileWidth,
         tileHeight;
 
+    // Replace the image filenames.
     var images = [
-        ['transparent', 'dog', 'dog', 'transparent', 'dog', 'dog', 'transparent'],
-        ['dog', 'dog', 'dog', 'dog', 'dog', 'dog', 'dog'],
-        ['dog', 'dog', 'dog', 'dog', 'dog', 'dog', 'dog'],
-        ['transparent', 'dog', 'dog', 'dog', 'dog', 'dog', 'transparent'],
-        ['transparent', 'transparent', 'dog', 'dog', 'dog', 'transparent', 'transparent'],
-        ['transparent', 'transparent', 'transparent', 'dog', 'transparent', 'transparent', 'transparent'],
+        ['transparent', 'example', 'example', 'transparent', 'example', 'example', 'transparent'],
+        ['example', 'example', 'example', 'example', 'example', 'example', 'example'],
+        ['example', 'example', 'example', 'example', 'example', 'example', 'example'],
+        ['transparent', 'example', 'example', 'example', 'example', 'example', 'transparent'],
+        ['transparent', 'transparent', 'example', 'example', 'example', 'transparent', 'transparent'],
+        ['transparent', 'transparent', 'transparent', 'example', 'transparent', 'transparent', 'transparent'],
     ];
+
+    var IMAGE_HOVERABLE_CLASS = 'hoverable';
 
     var setup = {
         createWall: function(options) {
@@ -34,7 +37,7 @@ app.Wall = (function(window) {
                     wallTd = document.createElement('td');
 
                     imgName = images[i][j];
-                    img = '_ui/img/' + imgName + '.jpg';
+                    img = '_ui/img/wall_images/' + imgName + '.jpg';
                     imgTag = document.createElement('img');
                     imgTag.width = options.imgWidth;
                     imgTag.height = options.imgHeight;
@@ -43,6 +46,7 @@ app.Wall = (function(window) {
                         imgTag.style.opacity = 0;
                     } else {
                         imgTag.style.opacity = 1;
+                        app.utils.addClass(imgTag, IMAGE_HOVERABLE_CLASS);
                     }
 
                     wallTd.appendChild(imgTag);

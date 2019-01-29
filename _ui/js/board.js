@@ -95,7 +95,16 @@ app.Board = (function(window, undefined) {
             element.style.height = heightOfBoard + 'px';
             
             return element;
-        }
+        },
+
+        imageMask: function(parent, image) {
+            // Add image at outset of game.
+            var img = document.createElement('img');
+            img.src = image;
+            img.width = widthOfBoard;
+            img.height = heightOfBoard;
+            parent.appendChild(img);
+        },
     };
     
     var translateByPosition = function(piece, position) {        
@@ -194,6 +203,7 @@ app.Board = (function(window, undefined) {
         resizeEvent = (('onorientationchange' in window) && app.isAndroid) ? 'orientationchange' : 'resize';
         
         this.element = setup.board(options);
+        setup.imageMask(this.element, options.image);
         this.pieces = setup.pieces(this.element);
         this.answer = this.pieces.slice();
         

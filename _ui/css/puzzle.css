@@ -1,15 +1,22 @@
 @media only screen and (min-width: 630px) {
     body {
-        margin: 0px;
-        background: transparent url('../img/wall_bg.jpg') no-repeat center center fixed;
+        background: transparent url('../img/background.jpg') no-repeat center center;
     }
 }
 
 @media only screen and (max-width: 629px) {
     body {
-        margin: 0px;
-        background: transparent url('../img/wall_bg.jpg') no-repeat center center;
+        background: transparent url('../img/background.jpg') no-repeat center center;
     }
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    background-size: cover;
 }
 
 #shuffle {

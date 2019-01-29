@@ -1,0 +1,110 @@
+/* Refer to CSS Trick */
+
+@-webkit-keyframes rota {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -webkit-transform-origin: right center 0;
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -webkit-transform-origin: right center 0;
+    }
+}
+
+@-webkit-keyframes fill {
+    0% {
+        opacity: 0; 
+    }
+
+    50%, 100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes mask {
+    0% {
+        opacity: 1;
+    }
+
+    50%, 100% {
+        opacity: 0;
+    }
+}
+
+@keyframes rota {
+    0% {
+        transform: rotate(0deg);
+        transform-origin: right center 0;
+    }
+
+    100% {
+        transform: rotate(360deg);
+        transform-origin: right center 0;
+    }
+}
+
+@keyframes fill {
+    0% {
+        opacity: 0; 
+    }
+
+    50%, 100% {
+        opacity: 1;
+    }
+}
+
+@keyframes mask {
+    0% {
+        opacity: 1;
+    }
+
+    50%, 100% {
+        opacity: 0;
+    }
+}
+
+#timer-wrapper {
+    margin: auto;
+    width: 70px;
+    height: 70px;
+    position: relative;
+    background: #f1f0ec;
+    overflow: visible;
+}
+
+.pie {
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    background: #f9d1ef;
+}
+
+.spinner {
+    border-radius: 125px 0 0 125px;
+    z-index: 200;
+    border-right: none;
+    -webkit-animation: 'rota' 3s linear infinite;
+    animation: 'rota' 3s linear infinite;
+}
+
+.filler {
+    border-radius: 0 125px 125px 0;
+    z-index: 200;
+    border-left: none;
+    -webkit-animation: 'fill' 3s steps(1, end) infinite;
+    animation: 'fill' 3s steps(1, end) infinite;
+    left: 50%;
+    opacity: 0;
+}
+
+.mask {
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    z-index: 300;
+    opacity: 1;
+    background: inherit;
+    -webkit-animation: 'mask' 3s steps(1, end) infinite;
+    animation: 'mask' 3s steps(1, end) infinite;
+}

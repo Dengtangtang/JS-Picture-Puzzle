@@ -1,0 +1,26 @@
+@-webkit-keyframes expand {
+    to {
+        -webkit-transform: scale(2.0);
+    }
+}
+
+@keyframes expand {
+    to {
+        transform: scale(2.0);
+    }
+}
+
+#wall img.hoverable:hover {
+    -webkit-animation-name: 'expand';
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-play-state: running;
+    animation-name: 'expand';
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+    animation-fill-modec: forwards;
+    animation-play-state: running;
+
+    cursor: zoom-in;
+}
