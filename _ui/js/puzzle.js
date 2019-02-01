@@ -33,15 +33,12 @@ app.Puzzle = (function(window, undefined) {
         //     that.board.shuffle();
         // }, false);
 
+        that.board.shuffle();
+
         window.setTimeout(function() {
             document.querySelector('#timer-wrapper').remove();  // Remove timer.
             that.board.element.firstChild.remove();  // Remove image mask.
-        }, 3000);
-
-        window.setTimeout(function() {
-            that.board.shuffle();
-        }, 3000);
-        
+        }, 3000);        
     };
 
     return Puzzle;
