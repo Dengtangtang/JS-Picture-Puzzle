@@ -386,12 +386,16 @@ app.Board = (function(window, undefined) {
         
         app.utils.addClass(this.element, ANIMATE_CSS_CLASS);
 
-        // Check whether the user wins.
         var isWin = this.checkGame();
         if (isWin) {
             app.utils.removeClass(this.element, SHOW_CLASS);
-            var wall = document.querySelector('#wall');
-            app.utils.addClass(wall, SHOW_CLASS);
+            // Add wall
+            var wall = new app.Wall({
+                cssClass: 'wall',
+                id: 'wall',
+            });
+            app.utils.addClass(wall.element, SHOW_CLASS);
+            this.element.parentElement.appendChild(wall.element);
         }
     };
     

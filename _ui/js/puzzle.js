@@ -13,15 +13,9 @@ app.Puzzle = (function(window, undefined) {
             timerHeight: 100,
         });
 
-        this.wall = new app.Wall({
-            cssClass: 'wall',
-            id: 'wall',
-        });
-
-        // Add wall, board and timer to wrapper
+        // Add board and timer to wrapper
         var wrapper = document.querySelector(options.wrapper);
         wrapper.style.position = 'relative';
-        wrapper.appendChild(this.wall.element);
         wrapper.appendChild(this.board.element);
         app.utils.event.fire('board:appended');
         this.initEvents();
