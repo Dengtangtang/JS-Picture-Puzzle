@@ -14,12 +14,12 @@
     -webkit-animation-name: 'expand';
     -webkit-animation-duration: 2s;
     -webkit-animation-iteration-count: 1;
-    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: backwards;
     -webkit-animation-play-state: running;
     animation-name: 'expand';
     animation-duration: 2s;
     animation-iteration-count: 1;
-    animation-fill-modec: forwards;
+    animation-fill-mode: backwards;
     animation-play-state: running;
 
     cursor: zoom-in;

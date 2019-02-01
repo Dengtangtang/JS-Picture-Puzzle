@@ -103,6 +103,9 @@ app.Board = (function(window, undefined) {
             img.src = image;
             img.width = widthOfBoard;
             img.height = heightOfBoard;
+            img.style.display = 'block';
+            img.style.position = 'absolute';
+            img.style.zIndex = 100;
             parent.appendChild(img);
         },
     };
