@@ -1,11 +1,11 @@
 app.Puzzle = (function(window, undefined) {
     var hasTouch = 'ontouchstart' in window,
         endEvent = hasTouch ? 'touchend' : 'mouseup';
-      
+
     var Puzzle = function(options) {
         this.board = new app.Board({
-            cssClass: "board",
-            id: "board",
+            cssClass: 'board',
+            id: 'board',
             image: options.image
         });
         document.querySelector(options.wrapper).appendChild(this.board.element);
@@ -19,6 +19,9 @@ app.Puzzle = (function(window, undefined) {
         document.getElementById('shuffle').addEventListener(endEvent, function() {
             that.board.shuffle();
         }, false);
+
+        that.board.shuffle();
     };
+
     return Puzzle;
 })(window);
