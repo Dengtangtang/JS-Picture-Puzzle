@@ -1,5 +1,5 @@
 app.Board = (function(window, undefined) {
-    var gridNumEachSide = 3;
+    var gridNumEachSide = NUM_OF_GRID_EACH_SIDE;
     var hasTouch = 'ontouchstart' in window,
         resizeEvent,  // Defined later because android doesn't always work with orientation change, so I need to know the platform.
         startEvent = hasTouch ? 'touchstart' : 'mousedown',
