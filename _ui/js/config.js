@@ -1,1 +1,1 @@
-var NUM_OF_GRID_EACH_SIDE = 4;
+const NUM_OF_GRID_EACH_SIDE = 4;

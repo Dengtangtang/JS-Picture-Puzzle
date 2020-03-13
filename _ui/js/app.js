@@ -10,4 +10,3 @@ window.addEventListener('load', function() {
         wrapper: '#board-wrapper',
     });
 });
-

@@ -1,72 +1,72 @@
 app.Board = (function(window, undefined) {
-    var gridNumEachSide = NUM_OF_GRID_EACH_SIDE;
-    var hasTouch = 'ontouchstart' in window,
-        resizeEvent,  // Defined later because android doesn't always work with orientation change, so I need to know the platform.
+    const gridNumEachSide = NUM_OF_GRID_EACH_SIDE;
+    const hasTouch = 'ontouchstart' in window;
+    let resizeEvent;
+    const // Defined later because android doesn't always work with orientation change, so I need to know the platform.
         startEvent = hasTouch ? 'touchstart' : 'mousedown',
         moveEvent = hasTouch ? 'touchmove' : 'mousemove',
         endEvent = hasTouch ? 'touchend' : 'mouseup';
-        
-        
+
+
     // Board dimensions declared in the Board constructor
-    var widthOfBoard,
+    let widthOfBoard,
         heightOfBoard,
         tileWidth,
         tileHeight;
-    
-    var boardOffset;
-    
-    var ANIMATE_CSS_CLASS = 'animate',
+
+    let boardOffset;
+
+    const ANIMATE_CSS_CLASS = 'animate',
         ACTIVE_PIECE_CSS_CLASS = 'active';
-        
-    var convert = {
-        arrayIndexToTransform: function(i) {
-            var currentPosition = this.arrayIndexToBoardCoords(i);
+
+    const convert = {
+        arrayIndexToTransform: function (i) {
+            const currentPosition = this.arrayIndexToBoardCoords(i);
 
             return {
                 x: tileWidth * currentPosition.x,
                 y: tileHeight * currentPosition.y
             };
-        }, 
+        },
 
-        clientCoordsToBoardCoords: function(x, y) {
-            x -=  boardOffset.x;
-            y -=  boardOffset.y;
-            
+        clientCoordsToBoardCoords: function (x, y) {
+            x -= boardOffset.x;
+            y -= boardOffset.y;
+
             return {
                 x: Math.floor(x / tileWidth),
                 y: Math.floor(y / tileHeight)
             };
         },
 
-        arrayIndexToBoardCoords: function(index) {
+        arrayIndexToBoardCoords: function (index) {
             return {
-                x: index % gridNumEachSide, 
+                x: index % gridNumEachSide,
                 y: Math.floor(index / gridNumEachSide)
             };
         },
-        
-        boardCoordsToArrayIndex: function(point) {
+
+        boardCoordsToArrayIndex: function (point) {
             return (point.y * gridNumEachSide) + point.x;
         }
     };
-    
-    var setup = {
-        pieces: function(board) {
-            var pieces = [],
-                id = 0,
+
+    const setup = {
+        pieces: function (board) {
+            const pieces = [],
                 gridSize = gridNumEachSide * gridNumEachSide,
                 randomPiece = Math.floor(Math.random() * gridSize);
-            
-            for (var i = 0; i < gridSize; i++) {
-                var transformCoords;
-                var piece;
-                
+
+            for (let i = 0; i < gridSize; i++) {
+                let transformCoords;
+                let piece;
+
                 if (i === randomPiece) {
                     // Remove one piece.
                     piece = null;
                 } else {
                     transformCoords = convert.arrayIndexToTransform(i);
-                    
+
                     piece = new app.Piece({
                         width: tileWidth,
                         height: tileHeight,
@@ -74,88 +74,88 @@ app.Board = (function(window, undefined) {
                         id: i,
                         backgroundPosition: (-transformCoords.x) + 'px ' + (-transformCoords.y) + 'px',
                     });
-                    
+
                     translateByPosition(piece, transformCoords);
                     board.appendChild(piece.element);
                 }
                 pieces.push(piece);
             }
-            
+
             return pieces;
         },
 
-        board: function(options) {
-            var element = document.createElement('div');
+        board: function (options) {
+            const element = document.createElement('div');
             element.id = options.id;
             app.utils.addClass(element, options.cssClass);
             app.utils.addClass(element, ANIMATE_CSS_CLASS);
             element.style.width = widthOfBoard + 'px';
             element.style.height = heightOfBoard + 'px';
-            
+
             return element;
         }
     };
-    
-    var translateByPosition = function(piece, position) {        
+
+    const translateByPosition = function(piece, position) {
         app.utils.translate(position.x, position.y, piece.element);
     };
-    
-    var translateByIndex = function(piece, arrayIndex) {
-        var transformCoords = convert.arrayIndexToTransform(arrayIndex);
+
+    const translateByIndex = function (piece, arrayIndex) {
+        const transformCoords = convert.arrayIndexToTransform(arrayIndex);
         translateByPosition(piece, transformCoords);
     };
-    
-    var setPiecesTransform = function(pieces) {
-        pieces.forEach(function(piece, i) {
+
+    const setPiecesTransform = function (pieces) {
+        pieces.forEach(function (piece, i) {
             if (piece) {
                 translateByIndex(piece, i);
             }
         });
     };
-    
-    var addActiveClass = function(pieces) {
-        pieces.forEach(function(piece) {
+
+    const addActiveClass = function (pieces) {
+        pieces.forEach(function (piece) {
             if (piece) {
                 app.utils.addClass(piece.element, ACTIVE_PIECE_CSS_CLASS);
             }
         });
     };
-    
-    var removeActiveClass = function(pieces) {
-        pieces.forEach(function(piece) {
+
+    const removeActiveClass = function (pieces) {
+        pieces.forEach(function (piece) {
             if (piece) {
                 app.utils.removeClass(piece.element, ACTIVE_PIECE_CSS_CLASS);
             }
         });
     };
-    
-    var setBoardOffset = function(element) {
+
+    const setBoardOffset = function (element) {
         // To wait for Mobile to finish orientation
-        var timer = setTimeout(function() {
+        setTimeout(function () {
             boardOffset = {
                 x: element.offsetLeft,
                 y: element.offsetTop
             };
         }, 100);
     };
-    
-    var getBoardInfoByEvent = function(e, pieces, getEmptyTileArrayIndex) {
-        var isSameRow, 
+
+    const getBoardInfoByEvent = function (e, pieces, getEmptyTileArrayIndex) {
+        let isSameRow,
             isSameColumn,
             triggeredBoardCoords,
             emptyTileBoardCoords,
-            arrayIndex,
-            emptyTileArrayIndex = getEmptyTileArrayIndex,
+            arrayIndex;
+        const emptyTileArrayIndex = getEmptyTileArrayIndex,
             point = hasTouch ? e.changedTouches[0] : e;
-                
+
         triggeredBoardCoords = convert.clientCoordsToBoardCoords(point.pageX, point.pageY);
         emptyTileBoardCoords = convert.arrayIndexToBoardCoords(emptyTileArrayIndex);
-        
-        arrayIndex = convert.boardCoordsToArrayIndex( triggeredBoardCoords );
-        
+
+        arrayIndex = convert.boardCoordsToArrayIndex(triggeredBoardCoords);
+
         isSameRow = triggeredBoardCoords.y === emptyTileBoardCoords.y;
         isSameColumn = triggeredBoardCoords.x === emptyTileBoardCoords.x;
-      
+
         return {
             directionTriggeredRelativeToEmptyTile: {
                 left: isSameRow && (triggeredBoardCoords.x - emptyTileBoardCoords.x) < 0,
@@ -167,39 +167,39 @@ app.Board = (function(window, undefined) {
                 row: isSameRow,
                 column: isSameColumn
             },
-            
+
             rowDistance: triggeredBoardCoords.x - emptyTileBoardCoords.x,
-            
+
             triggeredArrayIndex: arrayIndex
         };
     };
-    
-    
+
+
     /*
     
     Constructor
     
     */
-    
-    var Board = function(options) {
-        var clientDimensions = app.utils.getClientDimensions();
-        
+
+    const Board = function (options) {
+        const clientDimensions = app.utils.getClientDimensions();
+
         widthOfBoard = options.width || ((clientDimensions.x > 500) ? 500 : clientDimensions.x);
         heightOfBoard = options.height || widthOfBoard;  // because it is a square
         tileWidth = (widthOfBoard / gridNumEachSide);
         tileHeight = (heightOfBoard / gridNumEachSide);
-        
+
         resizeEvent = (('onorientationchange' in window) && app.isAndroid) ? 'orientationchange' : 'resize';
-        
+
         this.element = setup.board(options);
         this.pieces = setup.pieces(this.element);
-        
+
         this.initEvents();
     };
-    
+
     Board.prototype.getEmptyTileArrayIndex = function() {
-        var pieces = this.pieces;
-        for (var i = 0, piecesLength = pieces.length; i < piecesLength; i++) {
+        const pieces = this.pieces;
+        for (let i = 0; i < pieces.length; i++) {
             if (!pieces[i]) {
                 return i;
             }
@@ -207,7 +207,7 @@ app.Board = (function(window, undefined) {
     };
 
     Board.prototype.shuffle = function() {
-        var pieces = this.pieces = app.utils.shuffleArray(this.pieces);
+        const pieces = this.pieces = app.utils.shuffleArray(this.pieces);
         pieces.forEach(function(piece, i) {
             if (piece) {
                 translateByIndex(piece, i);
@@ -216,8 +216,8 @@ app.Board = (function(window, undefined) {
     };
 
     Board.prototype.initEvents = function() {
-        var that = this;
-        
+        const that = this;
+
         this.element.addEventListener(startEvent, this, false);
         window.addEventListener(resizeEvent, this, false);
         
@@ -244,29 +244,29 @@ app.Board = (function(window, undefined) {
     };
 
     Board.prototype.getPiecesToMove = function() {
-        var direction = this.boardInfo.directionTriggeredRelativeToEmptyTile,
+        const direction = this.boardInfo.directionTriggeredRelativeToEmptyTile,
             rowDistance = this.boardInfo.rowDistance,
             arrayIndex = this.boardInfo.triggeredArrayIndex,
             emptyPieceIndex = this.getEmptyTileArrayIndex(),
             piecesToMoveArray = [],
             column = emptyPieceIndex % gridNumEachSide;
-            
+
         if (direction.left) {
-            for (var leftIndex = rowDistance + 1; 0 >= leftIndex; leftIndex++) {
+            for (let leftIndex = rowDistance + 1; 0 >= leftIndex; leftIndex++) {
                 piecesToMoveArray.unshift(this.pieces[arrayIndex - leftIndex]);
             }
         } else if (direction.right) {
-            for (var rightIndex = rowDistance - 1; 0 <= rightIndex; rightIndex--) {
+            for (let rightIndex = rowDistance - 1; 0 <= rightIndex; rightIndex--) {
                 piecesToMoveArray.unshift(this.pieces[arrayIndex-rightIndex]);
             }
         } else if (direction.up) {
-            for (var aboveIndex = emptyPieceIndex - 1; arrayIndex <= aboveIndex; aboveIndex--) {
+            for (let aboveIndex = emptyPieceIndex - 1; arrayIndex <= aboveIndex; aboveIndex--) {
                 if (aboveIndex % gridNumEachSide === column) {
                     piecesToMoveArray.unshift(this.pieces[aboveIndex]);
                 }                        
             }
         } else if (direction.down) {
-            for (var belowIndex = emptyPieceIndex+1; arrayIndex >= belowIndex; belowIndex++) {
+            for (let belowIndex = emptyPieceIndex+1; arrayIndex >= belowIndex; belowIndex++) {
                 if (belowIndex % gridNumEachSide === column) {
                     piecesToMoveArray.unshift(this.pieces[belowIndex]);
                 }
@@ -277,10 +277,10 @@ app.Board = (function(window, undefined) {
     };
 
     Board.prototype.startEvent = function(e) {
-        var isSameRow, isSameColumn;
-                
-        var point = hasTouch ? e.changedTouches[0] : e;
-                
+        let isSameRow, isSameColumn;
+
+        const point = hasTouch ? e.changedTouches[0] : e;
+
         this.startingPoint = {
             pageX: point.pageX,
             pageY: point.pageY
@@ -306,19 +306,19 @@ app.Board = (function(window, undefined) {
     }; 
 
     Board.prototype.moveEvent = function(e) {
-        var that = this,
+        const that = this,
             point = hasTouch ? e.changedTouches[0] : e,
             direction = this.boardInfo.directionTriggeredRelativeToEmptyTile,
             piecesToMove = this.piecesToMove,
             shouldMove = true,
             currentTile = this.pieces[this.boardInfo.triggeredArrayIndex];
-            
+
         app.utils.removeClass(this.element, ANIMATE_CSS_CLASS);
         e.preventDefault();
         
         if (piecesToMove.length) {
             piecesToMove.forEach(function(piece, i) {
-                var modifier, deltaX = 0, deltaY = 0;
+                let modifier, deltaX = 0, deltaY = 0;
                 if (direction.row){
                     modifier = direction.left ? (tileWidth*i) : -(tileWidth*i);
                     deltaX = (point.pageX - that.startingPoint.pageX) + modifier;
@@ -334,12 +334,12 @@ app.Board = (function(window, undefined) {
         this.lastPoint = point;
     };
 
-    Board.prototype.endEvent = function(e) {
-        var movedMostOfTheWay, 
-            didntMoveAtAll, 
-            point = this.lastPoint || this.startingPoint,
+    Board.prototype.endEvent = function() {
+        let movedMostOfTheWay,
+            didntMoveAtAll;
+        const point = this.lastPoint || this.startingPoint,
             direction = this.boardInfo.directionTriggeredRelativeToEmptyTile;
-            
+
         removeActiveClass(this.piecesToMove);
         
         app.utils.removeClass(this.element, ANIMATE_CSS_CLASS);
@@ -372,13 +372,12 @@ app.Board = (function(window, undefined) {
     };
     
     Board.prototype.resizeBoard = function() {
-        var that = this;
-        var timer = 0;
+        const that = this;
         setBoardOffset(this.element);
         app.utils.removeClass(this.element, ANIMATE_CSS_CLASS);
         
         // xxx don't repeat this getclient code from up above - DRY
-        var clientWidth = (app.utils.getClientDimensions().x > 500) ? 500 : app.utils.getClientDimensions().x;
+        const clientWidth = (app.utils.getClientDimensions().x > 500) ? 500 : app.utils.getClientDimensions().x;
         tileWidth = clientWidth / gridNumEachSide;
         tileHeight = clientWidth / gridNumEachSide;
         
@@ -386,9 +385,9 @@ app.Board = (function(window, undefined) {
         this.element.style.height = clientWidth + 'px';
         
         this.pieces.forEach(function(piece, i) {
-            var transformCoords;
-            var styles = {};
-            
+            let transformCoords;
+            let styles = {};
+
             if (piece) {
                 transformCoords = convert.arrayIndexToTransform(piece.id);
                 
@@ -405,14 +404,14 @@ app.Board = (function(window, undefined) {
         });
         
         // To wait for the resize to finish
-        timer = setTimeout(function() {
+        setTimeout(function() {
             app.utils.addClass(that.element, ANIMATE_CSS_CLASS);
         }, 100);
         
     };
     
     Board.prototype.movePieces = function() {
-        var direction = this.boardInfo.directionTriggeredRelativeToEmptyTile,
+        const direction = this.boardInfo.directionTriggeredRelativeToEmptyTile,
             arrayIndex = this.boardInfo.triggeredArrayIndex,
             piecesToMove = this.piecesToMove,
             that = this;

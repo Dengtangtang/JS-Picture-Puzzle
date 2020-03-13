@@ -1,8 +1,8 @@
 app.Utils = (function(window) {
-    var Utils = function() {};
-    
-    var transformProperty;
-    
+    const Utils = function () {};
+
+    let transformProperty;
+
     if (document.body.style.webkitTransform !== undefined) {
       transformProperty = 'webkitTransform';
     } else if (document.body.style.mozTransform !== undefined){
@@ -22,7 +22,7 @@ app.Utils = (function(window) {
             if (typeof this.eventMap[eventName] === 'undefined' || replace) {
                 this.eventMap[eventName] = fn;
             } else {
-                var oldFunction = this.eventMap[eventName];
+                const oldFunction = this.eventMap[eventName];
                 this.eventMap[eventName] = function(data) {
                     if(typeof data !== 'undefined') {
                         oldFunction(data);
@@ -44,8 +44,8 @@ app.Utils = (function(window) {
     };
     
     Utils.prototype.addClass = function(el, classname) {
-        var existingClasses = el.className;
-        
+        const existingClasses = el.className;
+
         if (existingClasses.indexOf(classname) === -1 ) {
             el.className = (existingClasses + ' ' + classname).trim();
         }
@@ -54,8 +54,8 @@ app.Utils = (function(window) {
     };
     
     Utils.prototype.removeClass = function(el, classname) {
-        var existingClasses = el.className;
-        
+        const existingClasses = el.className;
+
         el.className = existingClasses.replace(classname, '').trim();
         
         return el;
@@ -63,15 +63,16 @@ app.Utils = (function(window) {
     
     Utils.prototype.translate = function(toX, toY, el, currentTransform) {
         currentTransform = currentTransform || {};
-        var currentX = currentTransform.x || 0;
-        var currentY = currentTransform.y || 0;
+        const currentX = currentTransform.x || 0;
+        const currentY = currentTransform.y || 0;
         el.style[transformProperty] = 'translate(' + Math.ceil(currentX + toX)+ 'px, ' + Math.ceil(currentY + toY) + 'px)';
     };
     
     //  from Underscore.js
     // http://documentcloud.github.com/underscore/underscore.js
     Utils.prototype.shuffleArray = function(obj) {
-        var shuffled = [], rand;
+        const shuffled = [];
+        let rand;
         obj.forEach(function(value, index) {
           if (index === 0) {
             shuffled[0] = value;
@@ -85,10 +86,7 @@ app.Utils = (function(window) {
     };
     
     Utils.prototype.isAndroid = function() {
-      if (navigator.userAgent.indexOf('Android') > -1) {
-        return true;
-      }
-      return false;
+      return navigator.userAgent.indexOf('Android') > -1;
     };
     
     return Utils;
