@@ -1,11 +1,12 @@
-.board {
+.board,
+.wall {
     margin: 20px auto;
     overflow: hidden;
-    position: relative;
+    position: absolute;
+    left: 0;
+    right: 0;
     z-index: 2;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#B9B9B9), to(#888));
-    background-image: -moz-gradient(linear, left top, left bottom, from(#B9B9B9), to(#888));
-    background-image: gradient(linear, left top, left bottom, from(#B9B9B9), to(#888));
+    background: rgba(1, 1, 1, 0.7);
     opacity: 0;
     -webkit-transition: opacity 1.5s linear;
     -moz-transition: opacity 1.5s linear;
@@ -14,4 +15,16 @@
 
 .board.showing {
     opacity: 1;
+}
+
+/* Add wall css */
+.wall > table {
+    margin: auto;
+}
+
+.wall.showing {
+    opacity: 1;
+    z-index: 50;
+    overflow: visible;
+    background: none;
 }

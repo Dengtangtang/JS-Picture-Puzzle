@@ -17,7 +17,8 @@ app.Board = (function(window) {
     let boardOffset;
 
     const ANIMATE_CSS_CLASS = 'animate',
-        ACTIVE_PIECE_CSS_CLASS = 'active';
+        ACTIVE_PIECE_CSS_CLASS = 'active',
+        SHOW_CLASS = 'showing';
 
     const convert = {
         arrayIndexToTransform: function (i) {
@@ -89,11 +90,24 @@ app.Board = (function(window) {
             element.id = options.id;
             app.utils.addClass(element, options.cssClass);
             app.utils.addClass(element, ANIMATE_CSS_CLASS);
+            app.utils.addClass(element, SHOW_CLASS);
             element.style.width = widthOfBoard + 'px';
             element.style.height = heightOfBoard + 'px';
 
             return element;
-        }
+        },
+
+        imageMask: function(parent, image) {
+            // Add image at outset of game.
+            const img = document.createElement('img');
+            img.src = image;
+            img.width = widthOfBoard;
+            img.height = heightOfBoard;
+            img.style.display = 'block';
+            img.style.position = 'absolute';
+            img.style.zIndex = "100";
+            parent.appendChild(img);
+        },
     };
 
     const translateByPosition = function(piece, position) {
@@ -190,8 +204,10 @@ app.Board = (function(window) {
         resizeEvent = (('onorientationchange' in window) && app.isAndroid) ? 'orientationchange' : 'resize';
 
         this.element = setup.board(options);
+        setup.imageMask(this.element, options.image);
         const piecesSetup = setup.pieces(this.element);
         this.pieces = piecesSetup.pieces;
+        this.answer = this.pieces.slice();
         this.emptyPiece = piecesSetup.emptyPiece;
 
         this.initEvents();
@@ -399,6 +415,18 @@ app.Board = (function(window) {
         this.lastPoint = null;
         
         app.utils.addClass(this.element, ANIMATE_CSS_CLASS);
+
+        const isWin = this.checkGame();
+        if (isWin) {
+            app.utils.removeClass(this.element, SHOW_CLASS);
+            // Add wall
+            const wall = new app.Wall({
+                cssClass: 'wall',
+                id: 'wall',
+            });
+            app.utils.addClass(wall.element, SHOW_CLASS);
+            this.element.parentElement.appendChild(wall.element);
+        }
     };
     
     Board.prototype.resizeBoard = function() {
@@ -467,6 +495,25 @@ app.Board = (function(window) {
         
         setPiecesTransform(this.pieces);
     };
-    
+
+    Board.prototype.checkGame = function() {
+        // console.log(this.answer);
+        // console.log(this.pieces);
+        for (let i = 0; i < this.answer.length; i++) {
+            const currAnswerPiece = this.answer[i];
+            const currPiece = this.pieces[i];
+            if (currAnswerPiece === null) {
+                if (currPiece !== null) {
+                    return false;
+                }
+            } else {
+                if (currPiece === null || currAnswerPiece.element.id !== currPiece.element.id) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    };
+
     return Board;
 })(window);

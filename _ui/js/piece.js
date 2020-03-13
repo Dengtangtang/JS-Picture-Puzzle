@@ -1,4 +1,4 @@
-app.Piece = (function(window, undefined) {
+app.Piece = (function(window) {
 
     const ID_NAMESPACE = 'piece';
 
