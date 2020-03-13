@@ -11,14 +11,14 @@ window.addEventListener('load', function() {
     });
 
     // Add height to #board-wrapper.
-    var boardDiv = app.puzzle.board.element;
+    const boardDiv = app.puzzle.board.element;
     document.querySelector('#board-wrapper').style.height = boardDiv.offsetHeight + 20 * 2 + 'px';
 
     // Add timer inside #timer-wrapper.
-    var timerWrapper = document.querySelector('#timer-wrapper');
-    var spinDiv = document.createElement('div');
-    var fillDiv = document.createElement('div');
-    var maskDiv = document.createElement('div');
+    const timerWrapper = document.querySelector('#timer-wrapper');
+    const spinDiv = document.createElement('div');
+    const fillDiv = document.createElement('div');
+    const maskDiv = document.createElement('div');
     app.utils.addClass(spinDiv, 'spinner');
     app.utils.addClass(spinDiv, 'pie');
     app.utils.addClass(fillDiv, 'filler');
@@ -29,6 +29,4 @@ window.addEventListener('load', function() {
     timerWrapper.appendChild(fillDiv);
     timerWrapper.appendChild(maskDiv);
 
-
 });
-

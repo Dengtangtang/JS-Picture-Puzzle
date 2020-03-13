@@ -1,14 +1,9 @@
 app.Wall = (function(window) {
-    var numOfRows = 6;
-    var numOfColumns = 7;
-
-    var widthOfBoard,
-        heightOfBoard,
-        tileWidth,
-        tileHeight;
+    const numOfRows = 6;
+    const numOfColumns = 7;
 
     // Replace the image filenames.
-    var images = [
+    const images = [
         ['transparent', 'example', 'example', 'transparent', 'example', 'example', 'transparent'],
         ['example', 'example', 'example', 'example', 'example', 'example', 'example'],
         ['example', 'example', 'example', 'example', 'example', 'example', 'example'],
@@ -17,11 +12,11 @@ app.Wall = (function(window) {
         ['transparent', 'transparent', 'transparent', 'example', 'transparent', 'transparent', 'transparent'],
     ];
 
-    var IMAGE_HOVERABLE_CLASS = 'hoverable';
+    const IMAGE_HOVERABLE_CLASS = 'hoverable';
 
-    var setup = {
-        createWall: function(options) {
-            var wallDiv,
+    const setup = {
+        createWall: function (options) {
+            let wallDiv,
                 wallTable,
                 wallTr,
                 wallTd,
@@ -31,9 +26,9 @@ app.Wall = (function(window) {
 
             wallDiv = document.createElement('div');
             wallTable = document.createElement('table');
-            for (var i = 0; i < numOfRows; i++) {
+            for (let i = 0; i < numOfRows; i++) {
                 wallTr = document.createElement('tr');
-                for (var j = 0; j < numOfColumns; j++) {
+                for (let j = 0; j < numOfColumns; j++) {
                     wallTd = document.createElement('td');
 
                     imgName = images[i][j];
@@ -43,9 +38,9 @@ app.Wall = (function(window) {
                     imgTag.height = options.imgHeight;
                     imgTag.src = img;
                     if (imgName === 'transparent') {
-                        imgTag.style.opacity = 0;
+                        imgTag.style.opacity = "0";
                     } else {
-                        imgTag.style.opacity = 1;
+                        imgTag.style.opacity = "1";
                         app.utils.addClass(imgTag, IMAGE_HOVERABLE_CLASS);
                     }
 
@@ -58,27 +53,25 @@ app.Wall = (function(window) {
 
             return wallDiv;
         }
-    }
+    };
 
-    var Wall = function(options) {
-        var clientDimensions = app.utils.getClientDimensions();
-        
-        widthOfWall = options.width || ((clientDimensions.x > 700) ? 700 : clientDimensions.x);
-        heightOfWall = options.height || widthOfWall / 1.5;  // because it is a square
-        imgWidth = (widthOfWall / numOfColumns);
-        imgHeight = (heightOfWall / numOfRows);
+    return function (options) {
+        const clientDimensions = app.utils.getClientDimensions();
 
-        styles = {
+        const widthOfWall = options.width || ((clientDimensions.x > 700) ? 700 : clientDimensions.x);
+        const heightOfWall = options.height || widthOfWall / 1.5;  // because it is a square
+        const imgWidth = (widthOfWall / numOfColumns);
+        const imgHeight = (heightOfWall / numOfRows);
+
+        const styles = {
             imgWidth: imgWidth,
             imgHeight: imgHeight,
-        }
-        
+        };
+
         // resizeEvent = (('onorientationchange' in window) && app.isAndroid) ? 'orientationchange' : 'resize';
 
         this.element = setup.createWall(styles);
         this.element.id = options.id;
         app.utils.addClass(this.element, options.cssClass);
     };
-
-    return Wall;
 })(window);

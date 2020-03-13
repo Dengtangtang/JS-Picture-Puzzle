@@ -1,10 +1,8 @@
-app.Puzzle = (function(window, undefined) {
-    var hasTouch = 'ontouchstart' in window,
+app.Puzzle = (function(window) {
+    const hasTouch = 'ontouchstart' in window,
         endEvent = hasTouch ? 'touchend' : 'mouseup';
 
-    // var SHOW_CLASS = 'showing';
-      
-    var Puzzle = function(options) {
+    const Puzzle = function (options) {
         this.board = new app.Board({
             cssClass: 'board',
             id: 'board',
@@ -14,7 +12,7 @@ app.Puzzle = (function(window, undefined) {
         });
 
         // Add board and timer to wrapper
-        var wrapper = document.querySelector(options.wrapper);
+        const wrapper = document.querySelector(options.wrapper);
         wrapper.style.position = 'relative';
         wrapper.appendChild(this.board.element);
         app.utils.event.fire('board:appended');
@@ -22,7 +20,7 @@ app.Puzzle = (function(window, undefined) {
     };
     
     Puzzle.prototype.initEvents = function() {
-        var that = this;
+        const that = this;
         // document.getElementById('shuffle').addEventListener(endEvent, function() {
         //     that.board.shuffle();
         // }, false);
@@ -32,7 +30,7 @@ app.Puzzle = (function(window, undefined) {
         window.setTimeout(function() {
             document.querySelector('#timer-wrapper').remove();  // Remove timer.
             that.board.element.firstChild.remove();  // Remove image mask.
-        }, 3000);        
+        }, 3000);
     };
 
     return Puzzle;

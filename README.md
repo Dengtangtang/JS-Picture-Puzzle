@@ -2,7 +2,7 @@
 
 
 ## Descriptions
-- An HTML5 JavaScript photo scramble app.
+- An HTML5 JavaScript photo scramble app (that shows only valid combinations).
 - No dependencies.
 - It is now a static webapp, I may modify it and integrate it into my blog website.
 - The effect after player wins the game is hard coded in wall.js, so it is not elegant and I did not track the image files, so you should add your own images.
