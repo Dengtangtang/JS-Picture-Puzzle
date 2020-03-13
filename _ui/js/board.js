@@ -1,4 +1,4 @@
-app.Board = (function(window, undefined) {
+app.Board = (function(window) {
     const gridNumEachSide = NUM_OF_GRID_EACH_SIDE;
     const hasTouch = 'ontouchstart' in window;
     let resizeEvent;
@@ -55,13 +55,13 @@ app.Board = (function(window, undefined) {
         pieces: function (board) {
             const pieces = [],
                 gridSize = gridNumEachSide * gridNumEachSide,
-                randomPiece = Math.floor(Math.random() * gridSize);
+                emptyPiece = Math.floor(Math.random() * gridSize);
 
             for (let i = 0; i < gridSize; i++) {
                 let transformCoords;
                 let piece;
 
-                if (i === randomPiece) {
+                if (i === emptyPiece) {
                     // Remove one piece.
                     piece = null;
                 } else {
@@ -81,7 +81,7 @@ app.Board = (function(window, undefined) {
                 pieces.push(piece);
             }
 
-            return pieces;
+            return {pieces: pieces, emptyPiece: emptyPiece};
         },
 
         board: function (options) {
@@ -176,9 +176,7 @@ app.Board = (function(window, undefined) {
 
 
     /*
-    
     Constructor
-    
     */
 
     const Board = function (options) {
@@ -192,7 +190,9 @@ app.Board = (function(window, undefined) {
         resizeEvent = (('onorientationchange' in window) && app.isAndroid) ? 'orientationchange' : 'resize';
 
         this.element = setup.board(options);
-        this.pieces = setup.pieces(this.element);
+        const piecesSetup = setup.pieces(this.element);
+        this.pieces = piecesSetup.pieces;
+        this.emptyPiece = piecesSetup.emptyPiece;
 
         this.initEvents();
     };
@@ -206,8 +206,38 @@ app.Board = (function(window, undefined) {
         }
     };
 
+    // This function returns true if puzzle is solvable
+    Board.prototype.isSolvable = function() {
+        // Count inversions in given puzzle
+        const invCount = app.utils.getInvCount(this.pieces, gridNumEachSide);
+
+        // If grid is odd, return true if inversion
+        // count is even.
+        if (gridNumEachSide  % 2 === 1)
+            return (invCount % 2) === 0;
+        else     // grid is even
+        {
+            const posEmptyTile = this.getEmptyTileArrayIndex();
+            const rowEmptyTile = Math.floor(posEmptyTile / gridNumEachSide);
+
+            const posEmptyPiece = this.emptyPiece;
+            const rowEmptyPiece = Math.floor(posEmptyPiece / gridNumEachSide);
+
+            const rowDifference = rowEmptyPiece - rowEmptyTile;
+
+            if (rowDifference % 2 === 0)
+                return (invCount % 2) === 0;	// the blank is on an odd row counting from the bottom (last, third-last, fifth-last, etc.) and number of inversions is even (if true).
+            else
+                return (invCount % 2) === 1;	// the blank is on an even row counting from the bottom (second-last, fourth-last, etc.) and number of inversions is odd (if true).
+        }
+    };
+
     Board.prototype.shuffle = function() {
-        const pieces = this.pieces = app.utils.shuffleArray(this.pieces);
+        let pieces;
+        do {
+            pieces = this.pieces = app.utils.shuffleArray(this.pieces);
+        } while(!this.isSolvable());
+
         pieces.forEach(function(piece, i) {
             if (piece) {
                 translateByIndex(piece, i);

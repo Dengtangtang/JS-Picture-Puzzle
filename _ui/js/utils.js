@@ -88,7 +88,31 @@ app.Utils = (function(window) {
     Utils.prototype.isAndroid = function() {
       return navigator.userAgent.indexOf('Android') > -1;
     };
-    
+
+    // A utility function to count inversions in given
+    // array 'arr[]'. Note that this function can be
+    // optimized to work in O(n Log n) time. The idea
+    // here is to keep code small and simple.
+    Utils.prototype.getInvCount = function(pieces, gridNumEachSide) {
+        let inv_count = 0;
+        for (let i = 0; i < gridNumEachSide * gridNumEachSide - 1; i++)
+        {
+            if(!pieces[i])
+                continue;
+
+            for (let j = i + 1; j < gridNumEachSide * gridNumEachSide; j++)
+            {
+                if(!pieces[j])
+                    continue;
+                // count pairs(i, j) such that i appears
+                // before j, but i > j.
+                if (pieces[i].id > pieces[j].id)
+                    inv_count++;
+            }
+        }
+        return inv_count;
+    };
+
     return Utils;
     
 })(window, undefined);
